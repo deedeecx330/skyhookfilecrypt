@@ -39,6 +39,7 @@ def decryptFile(oldName, newName, key):
 
     inFile = open(oldName, "rb")
     iv, content = inFile.read().split(separator)
+    
     length = int(len(content) / AES.block_size)
     skip = len(iv + separator)
     
