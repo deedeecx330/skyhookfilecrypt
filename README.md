@@ -6,7 +6,6 @@ To use SFC, simply import it into your Python 3 project:
 ```
 import sfc
 ```
-
 The module has two functions, encryptFile and decryptFile. Both take 3 arguments: File that is to be encrypted/decrypted, output file where encrypted/decrypted contents will be saved to and a passphrase to encrypt/decrypt the file with.
 
 Simply calling the functions like so:
@@ -17,4 +16,3 @@ will encrypt <i>test.txt</i> and save it as a new file called <i>test.sky</i>. T
 ```
 sfc.decryptFile('test.sky', 'test.txt', 3.14)
 ```
-The key itself can be any primitive, such as int, str, float, etc. as it will be automatically converted, first to a string and then to bytes upon entering either of the functions.
