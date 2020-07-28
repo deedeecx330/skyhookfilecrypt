@@ -1,6 +1,6 @@
 # skyhookfilecrypt
 File encryption and decryption module extracted from Skyhook: https://github.com/deedeecx330/skyhook .
-It was designed to be extremely easy on the resources at the cost of speed.
+It was designed to be extremely easy on resources, albeit at the cost of speed.
 
 # Usage
 To use SFC, simply import it into your Python 3 project.
