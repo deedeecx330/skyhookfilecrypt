@@ -1,5 +1,5 @@
 # skyhookfilecrypt
-File encryption and decryption module extracted from Skyhook: https://github.com/deedeecx330/skyhook
+File encryption and decryption module extracted from Skyhook: https://github.com/deedeecx330/skyhook .
 It was designed to be extremely easy on the resources at the cost of speed.
 
 # Usage
