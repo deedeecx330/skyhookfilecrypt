@@ -3,7 +3,7 @@ from Crypto.Cipher import AES
 
 separator = b" :><:><:><: "
 
-chunkSize = int(math.pow(AES.block_size, 2))
+chunkSize = int(math.pow(AES.block_size, 4))
 maxThreads = int(math.pow(multiprocessing.cpu_count(), 2))
 
 def pad(content):
