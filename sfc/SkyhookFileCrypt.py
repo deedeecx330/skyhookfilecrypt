@@ -3,16 +3,13 @@ from Crypto.Cipher import AES
 
 separator = b" :><:><:><: "
 
-chunkSize = int(math.pow(AES.block_size, 4))
-maxThreads = int(math.pow(multiprocessing.cpu_count(), 2))
+chunkS = int(math.pow(AES.block_size, 4))
+threads = int(math.pow(multiprocessing.cpu_count(), 2))
 
 def pad(content):
-    return(content + b"\x00" * (AES.block_size - len(content) % AES.block_size))
+    return(content + b"!" * (AES.block_size - len(content) % AES.block_size))
 
-def enCrypt(cipher, content, fileHandle, padit, previous):
-
-    if padit == True:
-        content = pad(content)
+def enCrypt(cipher, content, fileHandle, previous):
 
     encrypted = cipher.encrypt(content)
 
@@ -28,9 +25,11 @@ def enCrypt(cipher, content, fileHandle, padit, previous):
             
 def encryptFile(originalName, newName, key):
 
-    global chunkSize
-    global maxThreads
-    global separator
+    global chunkS
+    global threads
+
+    chunkSize = chunkS
+    maxThreads = threads
 
     iv = os.urandom(16)
     cipher = AES.new(key, AES.MODE_CBC, iv)
@@ -58,19 +57,22 @@ def encryptFile(originalName, newName, key):
 
         threadPool = list()
         previous = None
+        last = False
 
+        if i == parts - 1:
+            last = True
+            maxThreads = 1
+        
         for x in range(0, maxThreads):
 
             inFile.seek(seekDefault + x * chunkSize)
 
-            content = inFile.read(chunkSize)
-
-            if i == parts - 1 and x == maxThreads - 1:
-                padit = True
+            if last == True:
+                content = pad(inFile.read())
             else:
-                padit = False
+                content = inFile.read(chunkSize)
 
-            t = threading.Thread(target=enCrypt, args=(cipher, content, outFile, padit, previous))
+            t = threading.Thread(target=enCrypt, args=(cipher, content, outFile, previous))
             threadPool.append(t)
             previous = t
 
@@ -84,13 +86,12 @@ def encryptFile(originalName, newName, key):
     inFile.close()
     outFile.close()
 
-
 def deCrypt(cipher, content, fileHandle, padded, previous):
 
     decrypted = cipher.decrypt(content)
 
     if padded == True:
-        decrypted = decrypted.rstrip(b"\x00")
+        decrypted = decrypted.rstrip(b"!")
 
     if previous == None:
         fileHandle.write(decrypted)
@@ -102,12 +103,13 @@ def deCrypt(cipher, content, fileHandle, padded, previous):
             fileHandle.write(decrypted)
             exit()
 
-
 def decryptFile(oldName, newName, key):
 
-    global chunkSize
-    global maxThreads
-    global separator
+    global chunkS
+    global threads
+
+    chunkSize = chunkS
+    maxThreads = threads
 
     inFile = open(oldName, "rb")
     outFile = open(newName, "wb")
@@ -133,17 +135,23 @@ def decryptFile(oldName, newName, key):
         
         threadPool = list()
         previous = None
+        last = False
+        
+        padded = False
+
+        if i == parts - 1:
+            last = True
+            maxThreads = 1
+            padded = True
 
         for x in range(0, maxThreads):
 
             inFile.seek(seekDefault + x * chunkSize)
 
-            content = inFile.read(chunkSize)
-
-            if i == parts - 1 and x == maxThreads - 1:
-                padded = True
+            if last == True:
+                content = inFile.read()
             else:
-                padded = False
+                content = inFile.read(chunkSize)
 
             t = threading.Thread(target=deCrypt, args=(cipher, content, outFile, padded, previous))
             threadPool.append(t)
