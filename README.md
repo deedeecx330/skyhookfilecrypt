@@ -1,9 +1,8 @@
 # skyhookfilecrypt
 File encryption and decryption module extracted from Skyhook: https://github.com/deedeecx330/skyhook .
-It was designed to be extremely easy on resources, albeit at the cost of speed.
 
 # Usage
-To use SFC, simply import it into your Python 3 project.
+To use skyhookfilecrypt, simply import it into your Python 3 project.
 
 The module has two functions, encryptFile and decryptFile. The function arguments in both cases are: 
 -   File that is to be encrypted/decrypted
@@ -12,12 +11,8 @@ The module has two functions, encryptFile and decryptFile. The function argument
 
 For example:
 ```
-import sfc
+import skyhookfilecrypt
 
-sfc.encryptFile(file.in, file.out, password)
+skyhookfilecrypt.encryptFile(file.in, file.out, password)
 ```
 will encrypt file.in with the given password and write the encrypted contents of file.in to file.out. Same principle works for decrypting files.
-
-# Roadmap
--   Possibly adding multithreading support
--   Possibly adding multiprocessing support
