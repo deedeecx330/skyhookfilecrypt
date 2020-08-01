@@ -13,7 +13,7 @@ setup(name='skyhookfilecrypt',
     author='deedeecx330',
     url='https://github.com/deedeecx330/skyhookfilecrypt',
     license='GNU General Public Licence v3 (GPLv3)',
-    install_requires=['pycrypto'],
+    install_requires=['pycryptodome'],
     keywords = "aes cbc encrypt decrypt cryptography file",
     classifiers=[
         'Operating System :: OS Independent',
