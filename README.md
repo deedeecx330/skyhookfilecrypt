@@ -11,4 +11,8 @@ For example
 ```
 skyhookfilecrypt.encryptFile(file.in, file.out, password)
 ```
-will encrypt file.in with the given password and write the encrypted contents of file.in to file.out. Same principle works for decrypting files.
+will encrypt file.in with the given password and write the encrypted contents of file.in to file.out. Same principle works for decrypting files:
+```
+skyhookfilecrypt.decryptFile(file.in, file.out, password)
+```
+will decrypt file.in with the given password and write the decrypted contents to file.out.
