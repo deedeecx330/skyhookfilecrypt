@@ -42,8 +42,8 @@ def encryptFile(originalName, newName, key):
 
     contentLength = inFile.tell()
 
-    if contentLength % AES.block_size != 0:
-        contentLength = contentLength + (contentLength % AES.block_size)
+    while contentLength % AES.block_size != 0:
+        contentLength = contentLength + 1
 
     if contentLength <= chunkSize:
         chunkSize = contentLength
