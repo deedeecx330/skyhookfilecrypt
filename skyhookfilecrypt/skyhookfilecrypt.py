@@ -6,22 +6,28 @@ separator = b" :><:><:><: "
 chunkS = int(math.pow(AES.block_size, 4))
 threads = int(math.pow(multiprocessing.cpu_count(), 2))
 
+lock = threading.Lock()
+
 def pad(content):
     return(content + b"!" * (AES.block_size - len(content) % AES.block_size))
 
 def enCrypt(cipher, content, fileHandle, previous):
 
+    global lock
+
     encrypted = cipher.encrypt(content)
 
     if previous == None:
-        fileHandle.write(encrypted)
-        exit()
+        with lock:
+            fileHandle.write(encrypted)
+            exit()
     else:
         while previous.is_alive() == True:
             pass
         else:
-            fileHandle.write(encrypted)
-            exit()
+            with lock:
+                fileHandle.write(encrypted)
+                exit()
             
 def encryptFile(originalName, newName, key):
 
@@ -88,20 +94,24 @@ def encryptFile(originalName, newName, key):
 
 def deCrypt(cipher, content, fileHandle, padded, previous):
 
+    global lock
+
     decrypted = cipher.decrypt(content)
 
     if padded == True:
         decrypted = decrypted.rstrip(b"!")
 
     if previous == None:
-        fileHandle.write(decrypted)
-        exit()
+        with lock:
+            fileHandle.write(decrypted)
+            exit()
     else:
         while previous.is_alive() == True:
             pass
         else:
-            fileHandle.write(decrypted)
-            exit()
+            with lock:
+                fileHandle.write(decrypted)
+                exit()
 
 def decryptFile(oldName, newName, key):
 
