@@ -37,6 +37,11 @@ def encryptFile(originalName, newName, key):
     chunkSize = chunkS
     maxThreads = threads
 
+    if type(key) is bytes:
+        key = pad(key)
+    else:
+        key = pad(bytes(str(key), 'ascii'))
+
     iv = os.urandom(16)
     cipher = AES.new(key, AES.MODE_CBC, iv)
 
@@ -120,6 +125,11 @@ def decryptFile(oldName, newName, key):
 
     chunkSize = chunkS
     maxThreads = threads
+
+    if type(key) is bytes:
+        key = pad(key)
+    else:
+        key = pad(bytes(str(key), 'ascii'))
 
     inFile = open(oldName, "rb")
     outFile = open(newName, "wb")

@@ -1,5 +1,7 @@
 # skyhookfilecrypt
-File encryption and decryption module extracted from Skyhook: https://github.com/deedeecx330/skyhook
+Multithreaded file encryption and decryption module extracted from Skyhook: https://github.com/deedeecx330/skyhook
+
+Designed to be both fast and easy on the resources. 
 
 # Usage
 The module has two functions, encryptFile and decryptFile. The function arguments in both cases are: 
