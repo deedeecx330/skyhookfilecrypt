@@ -5,9 +5,9 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 from setuptools import setup, find_packages
 
 setup(name='skyhookfilecrypt',
-    version='1.2',
+    version='1.3',
     packages = find_packages(),
-    description='File encryption and decryption module extracted from Skyhook',
+    description='Multithreaded file encryption and decryption module extracted from Skyhook',
     long_description=README,
     long_description_content_type='text/markdown',
     author='deedeecx330',
