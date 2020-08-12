@@ -7,7 +7,7 @@ Designed to be both fast and easy on the resources.
 The module has two functions, encryptFile and decryptFile. The function arguments in both cases are: 
 -   File that is to be encrypted/decrypted
 -   Output file where encrypted/decrypted contents will be saved to
--   A byte string passphrase to encrypt/decrypt the file with
+-   A passphrase to encrypt/decrypt the file with (Can be any primitive data type)
 
 For example
 ```
