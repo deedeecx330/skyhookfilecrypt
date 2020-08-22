@@ -1,15 +1,10 @@
 import os, math, threading, multiprocessing
 from Crypto.Cipher import AES
 
-separator = b" :><:><:><: "
-
-chunkS = int(math.pow(AES.block_size, 4))
-threads = int(math.pow(multiprocessing.cpu_count(), 2))
-
 lock = threading.Lock()
 
 def pad(content):
-    return(content + b"!" * (AES.block_size - len(content) % AES.block_size))
+    return(content + b"\x00" * (AES.block_size - len(content) % AES.block_size))
 
 def enCrypt(cipher, content, fileHandle, previous):
 
@@ -31,11 +26,11 @@ def enCrypt(cipher, content, fileHandle, previous):
             
 def encryptFile(originalName, newName, key):
 
-    global chunkS
-    global threads
+    key = pad(key)
+    separator = b" :><:><:><: "
 
-    chunkSize = chunkS
-    maxThreads = threads
+    chunkSize = int(math.pow(AES.block_size, 4))
+    maxThreads = int(math.pow(multiprocessing.cpu_count(), 2))
 
     iv = os.urandom(16)
     cipher = AES.new(key, AES.MODE_CBC, iv)
@@ -99,7 +94,7 @@ def deCrypt(cipher, content, fileHandle, padded, previous):
     decrypted = cipher.decrypt(content)
 
     if padded == True:
-        decrypted = decrypted.rstrip(b"!")
+        decrypted = decrypted.rstrip(b"\x00")
 
     if previous == None:
         with lock:
@@ -115,11 +110,11 @@ def deCrypt(cipher, content, fileHandle, padded, previous):
 
 def decryptFile(oldName, newName, key):
 
-    global chunkS
-    global threads
+    key = pad(key)
+    separator = b" :><:><:><: "
 
-    chunkSize = chunkS
-    maxThreads = threads
+    chunkSize = int(math.pow(AES.block_size, 4))
+    maxThreads = int(math.pow(multiprocessing.cpu_count(), 2))
 
     inFile = open(oldName, "rb")
     outFile = open(newName, "wb")
